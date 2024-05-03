@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="{{ 'modal.css' | asset_url }}">
+{%- capture fitment_modal_content -%}
+  <div class="fitment-modal-header">
+    <h3>Check Vehicle Fitment</h3>
+    <p>Check if <span>{{ product.title }}</span> fits your vehicle.</p>
+  </div>
+
+  {%- render 'ezsearch-global2', id: "global-fitment-widget", attr_theme: 'light', attr_sliding: 'false' -%}
+{%- endcapture -%}
+{%- render '_generic-modal', id: "global-fitment-modal", content: fitment_modal_content, class: 'fitment-modal' -%}  

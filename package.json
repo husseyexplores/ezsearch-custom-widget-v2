@@ -1,0 +1,14 @@
+{
+  "name": "ezsearch",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build && node esbuild.js"
+  },
+  "dependencies": {
+    "esbuild": "^0.20.2",
+    "vite": "^5.2.10"
+  },
+  "devDependencies": {
+    "sass": "^1.75.0"
+  }
+}
