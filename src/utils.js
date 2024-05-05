@@ -30,11 +30,12 @@ const _fetchCache = {}
  */
 export async function fetchCached(url, onResponse) {
   const cleanUrl = url.replace(/\\\//g, '/')
-  if (_fetchCache[cleanUrl]) return _fetchCache[cleanUrl]
 
-  const res = await fetch(cleanUrl).then(onResponse)
+  if (_fetchCache[cleanUrl]) return _fetchCache[cleanUrl].then(r => onResponse(r.clone()))
+
+  const res = fetch(cleanUrl)
   _fetchCache[cleanUrl] = res
-  return res
+  return res.then(r => onResponse(r.clone()))
 }
 
 /* prettier-ignore */
@@ -149,7 +150,6 @@ export function findIndexOfMap(label, map) {
   })
   return matchedIdx
 }
-
 
 export function last(list) {
   return list[list.length - 1]

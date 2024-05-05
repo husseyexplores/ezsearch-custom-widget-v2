@@ -97,10 +97,10 @@ var __async = (__this, __arguments, generator) => {
     return __async(this, null, function* () {
       const cleanUrl = url.replace(/\\\//g, "/");
       if (_fetchCache[cleanUrl])
-        return _fetchCache[cleanUrl];
-      const res = yield fetch(cleanUrl).then(onResponse);
+        return _fetchCache[cleanUrl].then((r) => onResponse(r.clone()));
+      const res = fetch(cleanUrl);
       _fetchCache[cleanUrl] = res;
-      return res;
+      return res.then((r) => onResponse(r.clone()));
     });
   }
   function parseCSV(str) {
