@@ -472,16 +472,22 @@ export class EzsearchGlobalV2 extends BaseElement {
       const isAnchor = btn instanceof HTMLAnchorElement
       const clearSelection = btn.getAttribute(CONSTS.ATTR.clear_selection) === 'true'
       btn.addEventListener('click', () => {
-        this._resetSelects(clearSelection, isAnchor)
-        EzsearchGlobalV2.instances.forEach(instance => {
-          if (instance != this) {
-            instance._resetSelects(clearSelection, isAnchor)
-          }
-        })
+        this._resetAllInstances(clearSelection, isAnchor)
       })
     }
 
     this._updateOptions({ selectIndex: -1 })
+  }
+
+  /**
+   *
+   * @param {boolean} [clearSelection=false]
+   * @param {boolean} [isAnchor=false]
+   */
+  _resetAllInstances(clearSelection = false, isAnchor =false) {
+    EzsearchGlobalV2.instances.forEach(instance => {
+      instance._resetSelects(clearSelection, isAnchor)
+    })
   }
 
   /**

@@ -701,15 +701,20 @@ var __async = (__this, __arguments, generator) => {
         const isAnchor = btn instanceof HTMLAnchorElement;
         const clearSelection = btn.getAttribute(CONSTS.ATTR.clear_selection) === "true";
         btn.addEventListener("click", () => {
-          this._resetSelects(clearSelection, isAnchor);
-          _EzsearchGlobalV2.instances.forEach((instance) => {
-            if (instance != this) {
-              instance._resetSelects(clearSelection, isAnchor);
-            }
-          });
+          this._resetAllInstances(clearSelection, isAnchor);
         });
       }
       this._updateOptions({ selectIndex: -1 });
+    }
+    /**
+     *
+     * @param {boolean} [clearSelection=false]
+     * @param {boolean} [isAnchor=false]
+     */
+    _resetAllInstances(clearSelection = false, isAnchor = false) {
+      _EzsearchGlobalV2.instances.forEach((instance) => {
+        instance._resetSelects(clearSelection, isAnchor);
+      });
     }
     /**
      *
@@ -941,6 +946,10 @@ var __async = (__this, __arguments, generator) => {
         filteredHrefs: (
           /** @type {any} */
           null
+        ),
+        resetBtns: (
+          /** @type {any} */
+          null
         )
       };
     }
@@ -957,9 +966,24 @@ var __async = (__this, __arguments, generator) => {
         throw new Error("ezsearch-fitment: parent widget not found");
       this.elements.itemTitles = Array.from(this.querySelectorAll("[data-ezs-item-title]"));
       this.elements.filteredHrefs = Array.from(this.querySelectorAll("[data-ezs-filtered-href]"));
+      this.elements.resetBtns = /** @type {any} */
+      Array.from(this.querySelectorAll('[data-ezs-goto-mode="selection"]'));
       if (this.unsubscribe)
         this.unsubscribe();
       this.unsubscribe = this.elements.parentWidget.subscribe(this.onUpdate);
+      for (let i = 0, len = this.elements.resetBtns.length; i < len; i++) {
+        const resetBtn = this.elements.resetBtns[i];
+        resetBtn.addEventListener(
+          "click",
+          () => {
+            const parent = this.elements.parentWidget;
+            if (parent) {
+              parent._resetAllInstances(false, false);
+            }
+          },
+          { signal: this._ac.signal }
+        );
+      }
       return true;
     }
     unmount() {

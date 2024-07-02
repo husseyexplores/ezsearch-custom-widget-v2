@@ -5,6 +5,7 @@
     "build": "vite build && node esbuild.js"
   },
   "dependencies": {
+    "@maverick-js/signals": "^5.11.5",
     "esbuild": "^0.20.2",
     "vite": "^5.2.10"
   },

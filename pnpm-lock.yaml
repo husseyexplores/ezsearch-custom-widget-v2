@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@maverick-js/signals':
+        specifier: ^5.11.5
+        version: 5.11.5
       esbuild:
         specifier: ^0.20.2
         version: 0.20.2
@@ -158,6 +161,9 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@maverick-js/signals@5.11.5':
+    resolution: {integrity: sha512-/GO94awrwN9ROYZDMTeByordjvbhcm3CMvB/2aL/sEUy9Va8nM/2GmNgOOe+rrooTGnz8/DzO73xomuBRrnYWw==}
 
   '@rollup/rollup-android-arm-eabi@4.17.0':
     resolution: {integrity: sha512-nNvLvC2fjC+3+bHYN9uaGF3gcyy7RHGZhtl8TB/kINj9hiOQza8kWJGZh47GRPMrqeseO8U+Z8ElDMCZlWBdHA==}
@@ -435,6 +441,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.20.2':
     optional: true
+
+  '@maverick-js/signals@5.11.5': {}
 
   '@rollup/rollup-android-arm-eabi@4.17.0':
     optional: true
