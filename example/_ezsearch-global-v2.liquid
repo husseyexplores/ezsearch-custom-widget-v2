@@ -1,0 +1,148 @@
+{%- liquid
+  assign skip = false
+
+  assign ezconf = shop.metafields.custom.ezsearch.value
+  assign only_collections = ezconf.only_collections | default: ''  | replace: ' ', '' | split: ','
+  assign forbidden_collections =  ezconf.forbidden_collections | default: '' | replace: ' ', '' | split: ','
+
+  if template.name == 'collection'
+
+    if only_collections == blank or only_collections.size == 0
+      if forbidden_collections contains collection.handle
+        assign skip = true
+      endif
+    else
+      assign skip = true
+      if collection.handle == 'all' or only_collections contains collection.handle
+        assign skip = false
+      endif
+    endif
+
+  elsif template.name == 'product'
+
+    assign product_collections = product.collections | map: 'handle'
+    if only_collections == blank or only_collections.size == 0
+      for forbidden_collection in forbidden_collections
+        if product_collections contains forbidden_collection
+          assign skip = true
+        break
+        endif
+      endfor
+    else
+      assign skip = true
+
+      for only_collection in only_collections
+        if product_collections contains only_collection
+          assign skip = false
+          break
+        endif
+      endfor
+    endif
+
+  endif`
+
+  if skip == false
+    if ezconf.global == false
+      if template.name != 'collection' and template.name != 'product'
+        assign skip = true
+      endif
+    endif
+  endif
+
+  if skip
+    break
+  endif
+-%}
+
+<style></style>
+
+<ezsearch-global-v2
+  id="{{ id | default: 'ezsearch-global-widget' }}"
+  class="EZS_Global {{ class }}"
+  data-legacy-search="true"
+  data-ezs-config-url="https://easysearchapp.dev/settings?x-api-key=b6bf489c-d47f-404d-9525-475f05236a40&shop={{ shop.permanent_domain }}"
+  data-ezs-collection-handle="{% if only_collections.size == 1 %}{{only_collections[0]}}{% else %}all{% endif %}"
+  data-ezs-cache-seconds="Infinity"
+  data-ezs-reset-next-selects-on-change="true"
+  data-ezs-autosearch="false"
+  data-theme="{{ attr_theme | default: 'dark' }}"
+  data-sliding="{{ attr_sliding | default: 'true' }}"
+  aria-expanded="false"
+>
+  <div class="EZS_header">
+    <h6
+      id="ezsearch-global-widget-toggle-btn"
+      class="h4 EZS_toggle-open-btn"
+      data-ezs-toggle-open
+      role="button">
+        {%- render 'icon', icon: 'custom-ezs-car' -%}
+        <span data-fallback-text="Add your vehicle" data-ezs-item-title>Add your vehicle</span>
+      </h6>
+  </div>
+
+  <div class="EZS_body">
+    <form class="EZS_form" data-ezs-form>
+      <div class="EZS_Selects">
+        <div class="EZS_Select-item">
+          <label>Year</label>
+          <select
+            class="noreplace theme-styled-select"
+            disabled
+            data-ezs-filter="Year"
+            data-ezs-sort="desc">
+            <option value="">Year</option>
+          </select>
+        </div>
+  
+        <div class="EZS_Select-item">
+          <label>Make</label>
+          <select
+            class="noreplace theme-styled-select"
+            disabled
+            data-ezs-filter="Make">
+            <option value="">Make</option>
+          </select>
+        </div>
+  
+        <div class="EZS_Select-item">
+          <label>Model</label>
+          <select
+            class="noreplace theme-styled-select"
+            disabled
+            data-ezs-filter="Model">
+            <option value="">Model</option>
+          </select>
+        </div>
+      </div>
+  
+      {%- if  template.name == 'collection' and current_tags.size > 0 -%}
+        <button
+          type="button"
+          class="btn"
+          disabled
+          data-ezs-load-on-click
+          data-ezs-clear-cache
+          data-ezs-goto-base-collection hidden>Clear</button>
+      {%- endif -%}
+  
+      <div class="EZS_form-btns" data-when-state="pending">
+        <button type="submit" class="btn">Add vehicle</button>
+      </div>
+
+      <div class="EZS_summary" data-when-state="selected">
+        <div class="EZS_summary-header">
+          <p data-ezs-item-title></p>
+          <div>
+            <button type="button" class="link-btn" data-ezs-goto-mode="selection">Change Vehicle</button>
+            {% comment %} <button type="button" class="link-btn" data-ezs-goto-mode="selection" data-ezs-clear-selection="true">Start over</button> {% endcomment %}
+          </div>
+        </div>
+
+        <div class="EZS_summary-footer">
+          <a href="" class="inline-link-btn" data-ezs-filtered-href>View Products</a>
+          <a class="inline-link-btn" data-ezs-goto-mode="selection" data-ezs-clear-selection="true" href="/" onclick="(() => {const btn = document.getElementById('ezsearch-global-widget-toggle-btn'); btn.click(); btn.setAttribute('disabled', ''); })();">Shop Without Vehicle</a>
+          </div>
+      </div>
+    </form>
+  </div>
+</ezsearch-global-v2>

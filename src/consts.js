@@ -1,0 +1,27 @@
+export const CONSTS = /** @type {const} */ ({
+  ATTR: {
+    id: 'data-ezs-id',
+    db_url: 'data-ezs-db-url',
+    legacy_search: 'data-legacy-search',
+    filter: 'data-ezs-filter',
+    config_url: 'data-ezs-config-url',
+    coll_handle: 'data-ezs-collection-handle',
+    reset_next_selects_on_change: 'data-ezs-reset-next-selects-on-change',
+    auto_search: 'data-ezs-autosearch',
+    csv_headers: 'data-ezs-has-csv-headers',
+    filtered_link: 'data-ezs-filtered-link',
+    item_title: 'data-ezs-item-title',
+    filter_trigger_verify: 'data-ezs-trigger-verify',
+    goto_pending: 'data-ezs-goto-pending',
+    goto_base_collection: 'data-ezs-goto-base-collection',
+    pre_clear_cache: 'data-ezs-clear-cache',
+    clear_selection: 'data-ezs-clear-selection',
+    cache_seconds: 'data-ezs-cache-seconds',
+    prod_tags: 'data-ezs-product-tags',
+    fitment_widget: 'data-ezs-fitment',
+    sort_by: 'data-ezs-sort', // "desc"
+    toggle_open: 'data-ezs-toggle-open',
+    loading_btn_class: 'data-ezs-loading-class',
+    legacy_collections: 'data-ezs-legacy-cols',
+  },
+})
